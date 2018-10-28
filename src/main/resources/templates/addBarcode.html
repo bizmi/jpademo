@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj kod kreskowy</title>
+    <link rel="stylesheet" type="text/css" th:href="@{main.css}">
+</head>
+<body>
+    <div style="text-align: center;">
+        <form action="/" method="post" th:object="${barcodeForm}">
+            Nazwa firmy: <input type="text" th:field="*{companyName}" placeholder="Nazwa firmy"> <br/>
+            Nazwa produktu: <input type="text" th:field="*{productName}"> <br/>
+            Kod kreskowy: <input type="text" maxlength="13" th:field="*{barcode}"> <br/>
+            Waga: <input type="number" max="200" th:field="*{weight}"> <br/>
+            <input type="submit" value="Wyślij"/>
+        </form>
+
+
+        <br/><br/>
+
+        <!--<div th:each="item : ${allBarcodes}">-->
+            <!--<h1 th:text="${item.getProductName()}"></h1> <small th:text="${item.getProductCompany()}"></small>-->
+                <!--<br/>-->
+            <!--Kod kreskowy: <span th:text="${item.getBarcode()}"></span> <small th:text="'Waga: ' + ${item.getWeight()}"></small>-->
+            <!--<hr/>-->
+        <!--</div>-->
+        <form action="/search" method="post">
+            <input type="text" th:name="search" placeholder="Czego szukasz?">
+            <input type="submit" value="Szukaj">
+        </form>
+
+        <br/>
+
+        <a href="/basket" th:text="${'Twój koszyk ma: ' + basket.getBasketSize()}"></a>
+
+        <br/>
+        <table align="center" border="1">
+            <tr>
+                <td> Nazwa firmy </td>
+                <td> Nazwa produktu </td>
+                <td> Kod kreskowy </td>
+                <td> Waga </td>
+                <td> Koszyk </td>
+
+            </tr>
+
+            <tr th:each="item : ${allBarcodes}">
+                <td th:text="${item.getProductCompany()}"></td>
+                <td th:text="${item.getProductName()}"></td>
+                <td th:text="${item.getBarcode()}"></td>
+                <td th:text="${item.getWeight()}"></td>
+
+                <td><a th:text="${basket.isIdOnList(item.getId()) ? 'Usuń z koszyka' : 'Dodaj do koszyka'}"
+                       th:href="${(basket.isIdOnList(item.getId()) ? '/remove/' : '/add/') + item.getId()}"></a></td>
+            </tr>
+        </table>
+
+
+    </div>
+
+
+</body>
+</html>
